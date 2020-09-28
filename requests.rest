@@ -1,0 +1,19 @@
+GET http://localhost:3000/posts
+
+###
+
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+    "username": "Kyle"
+}
+
+###
+
+GET http://localhost:3000/posts
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiS3lsZSIsImlhdCI6MTYwMTIyMDc4Mn0.IFJWPufdNOWCfZfkWUEQIdQBs1XXHeksDbA_-YZNPd8
+
+###
+
+POST http://localhost:3000/graphql
