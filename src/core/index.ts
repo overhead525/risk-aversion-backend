@@ -1,11 +1,16 @@
 import * as express from "express";
-import * as axios from "axios";
 
-import coreClient from "../core/client";
+require("isomorphic-fetch");
+
+import {
+    configurationsRequest,
+    simulationsRequest,
+    simulationInitRequest,
+} from "./helpers";
 
 const router = express.Router();
 
-interface coreSimRequest extends express.Request {
+interface coreConfigurationsRequest extends express.Request {
     body: {
         principal: number;
         riskDecimal: number;
@@ -18,36 +23,186 @@ interface coreSimRequest extends express.Request {
     };
 }
 
+interface coreQueryRequest extends express.Request {
+    body: Array<any>;
+}
+
 interface coreSimOutputResponse {
     maxPortfolio: number;
     minPortfolio: number;
 }
 
-// /core/init
-router.post("/", async (req: coreSimRequest, res: express.Response) => {
-    // Craft graphql request from client request
-    const coreGQLRequest = `
-    {
-        configurationById(simID: "b5e83578-6f28-4d3f-82ea-ed3aeb27fa0b") {
-          principal
-          winDecimal
-          rewardDecimal
-          breakEvenDecimal
-          numOfTrades
-        }
-      }
-    `;
-    try {
-        const rawData = await coreClient.post("", coreGQLRequest);
-        console.log(rawData);
-    } catch (error) {
-        console.error(error);
-    }
-    console.log("REQUEST SENT");
+router.post(
+    "/simulations",
+    async (req: express.Request, res: express.Response) => {
+        // Craft graphql request from client request
+        const simParams = simulationsRequest(req.body);
 
-    // Send graphql request to python graphql server and await response
-    // Upon response from pyserver (which should be json), log request and response to database
-    // Send json to client
-});
+        // Send graphql request to python graphql server and await response
+        try {
+            const response = await fetch(process.env["CORE_SERVER_URL"], {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    query: `query { 
+                        allSimulationResults {
+                            ${simParams}
+                        }
+                    }`,
+                }),
+            });
+
+            const responseJSON = await response.json();
+
+            res.status(200).send(responseJSON.data);
+        } catch (error) {
+            res.status(500).send(
+                "Something wrong happened with the simulation"
+            );
+        }
+    }
+);
+
+router.post(
+    "/configurations",
+    async (req: express.Request, res: express.Response) => {
+        // Craft graphql request from client request
+        const configurationParams = configurationsRequest(req.body);
+
+        // Send graphql request to python graphql server and await response
+        try {
+            const response = await fetch(process.env["CORE_SERVER_URL"], {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    query: `query { 
+                        allConfigurations {
+                            ${configurationParams}
+                        }
+                    }`,
+                }),
+            });
+
+            const responseJSON = await response.json();
+
+            res.status(200).send(responseJSON.data);
+        } catch (error) {
+            res.status(500).send(
+                "Something wrong happened with the simulation"
+            );
+        }
+    }
+);
+
+router.post(
+    "/simulations/:simID",
+    async (req: express.Request, res: express.Response) => {
+        // Craft graphql request from client request
+        const simIDRequestParams = simulationsRequest(req.body);
+
+        // Send graphql request to python graphql server and await response
+        try {
+            const response = await fetch("http://localhost:8000/graphql", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    query: `query { 
+                    simulationResultById(
+                        simID: "${req.params["simID"]}"
+                    ) { 
+                        ${simIDRequestParams}
+                    }
+                }`,
+                }),
+            });
+
+            const responseJSON = await response.json();
+
+            res.status(200).send(responseJSON.data);
+        } catch (error) {
+            res.status(500).send(
+                `A simulation with the id: ${req.params["simID"]} could not be found.`
+            );
+        }
+
+        // Upon response from pyserver (which should be json), log request and response to database
+        // Send json to client
+    }
+);
+
+router.post(
+    "/configurations/:simID",
+    async (req: express.Request, res: express.Response) => {
+        // Craft graphql request from client request
+        const simIDRequestParams = configurationsRequest(req.body);
+
+        // Send graphql request to python graphql server and await response
+        try {
+            const response = await fetch("http://localhost:8000/graphql", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    query: `query { 
+                    configurationById(
+                        simID: "${req.params["simID"]}"
+                    ) { 
+                        ${simIDRequestParams}
+                    }
+                }`,
+                }),
+            });
+
+            const responseJSON = await response.json();
+
+            res.status(200).send(responseJSON.data);
+        } catch (error) {
+            res.status(500).send(
+                `A configuration with the id: ${req.params["simID"]} could not be found.`
+            );
+        }
+
+        // Upon response from pyserver (which should be json), log request and response to database
+        // Send json to client
+    }
+);
+
+router.post(
+    "/init",
+    async (req: coreConfigurationsRequest, res: express.Response) => {
+        // Craft graphql request from client request
+        const mutationParams = simulationInitRequest(req.body);
+
+        // Send graphql request to python graphql server and await response
+        try {
+            const response = await fetch(process.env["CORE_SERVER_URL"], {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    query: `mutation { 
+                    simulate(
+                        ${mutationParams}
+                    ) { 
+                        result {
+                            maxPortfolio,
+                            minPortfolio
+                        }
+                    }
+                }`,
+                }),
+            });
+
+            const responseJSON = await response.json();
+
+            res.status(200).send(responseJSON.data);
+        } catch (error) {
+            res.status(500).send(
+                "Something wrong happened with the simulation"
+            );
+        }
+
+        // Upon response from pyserver (which should be json), log request and response to database
+        // Send json to client
+    }
+);
 
 export default router;

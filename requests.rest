@@ -16,4 +16,59 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiS3lsZSIsI
 
 ###
 
-POST http://localhost:3000/graphql
+POST http://localhost:3000/graphql/init
+Content-Type: application/json
+
+{
+    "principal": 100000,
+    "riskDecimal": 0.01,
+    "rewardDecimal": 0.03,
+    "winDecimal": 0.55,
+    "lossDecimal": 0.45,
+    "breakEvenDecimal": 0.25,
+    "numOfTrades": 50,
+    "numOfSimulations": 1000
+}
+
+###
+
+POST http://localhost:3000/graphql/configurations
+Content-Type: application/json
+
+[
+    "principal",
+    "riskDecimal",
+    "rewardDecimal"
+]
+
+###
+
+POST http://localhost:3000/graphql/simulations
+Content-Type: application/json
+
+[
+    "simID",
+    "maxPortfolio",
+    "minPortfolio"
+]
+
+###
+
+POST http://localhost:3000/graphql/simulations/07078817-22c2-4638-8a2f-73c5fee2680a
+Content-Type: application/json
+
+[
+    "maxPortfolio",
+    "minPortfolio"
+]
+
+###
+
+POST http://localhost:3000/graphql/configurations/b5e83578-6f28-4d3f-82ea-ed3aeb27fa0b
+Content-Type: application/json
+
+[
+    "principal",
+    "riskDecimal",
+    "rewardDecimal"
+]
