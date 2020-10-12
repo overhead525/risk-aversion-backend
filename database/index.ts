@@ -1,19 +1,44 @@
-import mongoose from "mongoose";
+import * as mongoose from "mongoose";
+require("dotenv").config();
 
-// username
-// root
+type CallBacksArr = Array<() => any | (() => Promise<any>)>;
 
-// password
-// Q3cuLOWpHMpFhd6D
+interface dbProps {
+    callbacks: CallBacksArr;
+}
 
-mongoose.connect(
-    "mongodb+srv://root:<Q3cuLOWpHMpFhd6D>@risk-aversion-backend-d.shiry.azure.mongodb.net/<risk-aversion-data.users>?retryWrites=true&w=majority"
-);
+const exampleCallback = async () => {
+    console.log("connection has been made");
+    const collections = await mongoose.connection.db
+        .listCollections()
+        .toArray();
+    console.log(collections);
+};
 
-mongoose.connection
-    .once("open", () => {
-        console.log("connection has been made");
-    })
-    .on("error", (error) => {
-        console.log("error is", error);
+const dbObject: dbProps = {
+    callbacks: [exampleCallback],
+};
+
+export const db = (dbconfig: dbProps) => {
+    mongoose.connect(process.env["DATABASE_URL"], {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
     });
+
+    mongoose.connection
+        .once("open", () => {
+            try {
+                const callbacks: CallBacksArr = dbconfig.callbacks;
+                callbacks.forEach((callback) => {
+                    callback();
+                });
+            } catch (error) {
+                throw new Error(
+                    "There was a problem with one of your callbacks"
+                );
+            }
+        })
+        .on("error", (error) => {
+            console.log("error is", error);
+        });
+};

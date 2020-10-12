@@ -4,12 +4,12 @@ config();
 import * as express from "express";
 
 // Routes
-import core from "./core";
+import auth from "./auth";
 
 const app = express();
 
 app.use(express.json());
 
-app.use("/graphql", core);
+app.use("/auth", auth);
 
-app.listen(3000, () => console.log("server running on port 3000 🚀"));
+app.listen(4000, () => console.log("server running on port 4000 🚀"));

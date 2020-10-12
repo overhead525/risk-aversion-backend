@@ -1,6 +1,7 @@
 import { ConfigurationParamsStrict } from "../src/types/query";
 import { simulationInitRequest } from "../src/core/helpers";
 
+/*
 describe("test request builders", () => {
     test("test simulationInitRequest", () => {
         const mockConfigurationObject: ConfigurationParamsStrict = {
@@ -30,3 +31,4 @@ describe("test request builders", () => {
         );
     });
 });
+*/

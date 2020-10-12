@@ -7,6 +7,7 @@ import {
     simulationsRequest,
     simulationInitRequest,
 } from "./helpers";
+import { authenticateToken } from "../auth/helpers";
 
 const router = express.Router();
 
@@ -34,6 +35,7 @@ interface coreSimOutputResponse {
 
 router.post(
     "/simulations",
+    authenticateToken,
     async (req: express.Request, res: express.Response) => {
         // Craft graphql request from client request
         const simParams = simulationsRequest(req.body);
@@ -65,6 +67,7 @@ router.post(
 
 router.post(
     "/configurations",
+    authenticateToken,
     async (req: express.Request, res: express.Response) => {
         // Craft graphql request from client request
         const configurationParams = configurationsRequest(req.body);
@@ -96,6 +99,7 @@ router.post(
 
 router.post(
     "/simulations/:simID",
+    authenticateToken,
     async (req: express.Request, res: express.Response) => {
         // Craft graphql request from client request
         const simIDRequestParams = simulationsRequest(req.body);
@@ -132,6 +136,7 @@ router.post(
 
 router.post(
     "/configurations/:simID",
+    authenticateToken,
     async (req: express.Request, res: express.Response) => {
         // Craft graphql request from client request
         const simIDRequestParams = configurationsRequest(req.body);
@@ -168,6 +173,7 @@ router.post(
 
 router.post(
     "/init",
+    authenticateToken,
     async (req: coreConfigurationsRequest, res: express.Response) => {
         // Craft graphql request from client request
         const mutationParams = simulationInitRequest(req.body);
