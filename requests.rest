@@ -80,7 +80,7 @@ POST http://localhost:4000/auth/token
 Content-Type: application/json
 
 {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDI1MzQ1NDJ9.a2YXIoYS9Io0g1_Ssd9AksUr3whvmbsvD8PwrkCgPRE"
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDI1MTc0NjB9.mqr97OCbvm2emJPEqfC1peJSeGsaLkPBhZx-TEtOhBg"
 }
 
 ###

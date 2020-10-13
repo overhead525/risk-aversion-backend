@@ -33,7 +33,7 @@ export const db = (dbconfig: dbProps) => {
                     callback();
                 });
             } catch (error) {
-                throw new Error(
+                return new Error(
                     "There was a problem with one of your callbacks"
                 );
             }
@@ -42,3 +42,22 @@ export const db = (dbconfig: dbProps) => {
             console.log("error is", error);
         });
 };
+
+export const useDB = (cb: Function) => {
+    mongoose.connect(process.env["DATABASE_URL"], {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    });
+
+    mongoose.connection
+        .once("open", () => {
+            try {
+                cb();
+            } catch (error) {
+                return error;
+            }
+        })
+        .on("error", (error) => {
+            console.error("error is", error);
+        })
+}
