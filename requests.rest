@@ -80,7 +80,7 @@ POST http://localhost:4000/auth/token
 Content-Type: application/json
 
 {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDI1MTc0NjB9.mqr97OCbvm2emJPEqfC1peJSeGsaLkPBhZx-TEtOhBg"
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTG1hbGNvbG1SIiwiaWF0IjoxNjAyNjI2NTQyLCJleHAiOjE2MDI3MTI5NDJ9.xKKCYvXz-5zQtnGj8_7PCp0cYRNh62YhY3dMlHTKaC4"
 }
 
 ###
@@ -89,7 +89,7 @@ DELETE  http://localhost:4000/auth/logout
 Content-Type: application/json
 
 {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDI1MzQ1NDJ9.a2YXIoYS9Io0g1_Ssd9AksUr3whvmbsvD8PwrkCgPRE"
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTG1hbGNvbG1SIiwiaWF0IjoxNjAyNjI2NTU4LCJleHAiOjE2MDI3MTI5NTh9.JjPko6qcPNi6QFCbtTjoRxRp2zmbGFMfr69H8vF28JQ"
 }
 
 ###
@@ -98,9 +98,8 @@ POST http://localhost:4000/auth/register
 Content-Type: application/json
 
 {
-    "register": true,
-    "username": "videlLovesGohan",
-    "password": "greatsaiyaman"
+    "username": "sakura",
+    "password": "harunoclan"
 }
 
 ###
