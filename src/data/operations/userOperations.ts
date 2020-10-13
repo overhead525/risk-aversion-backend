@@ -4,8 +4,9 @@ import { User } from "../../models";
 
 export interface UserInterface {
     username: string;
-    email: string;
+    email?: string;
     password: string;
+    simulations?: [{ simName: string, simID: string }];
 }
 
 export interface UserQueryInterface {
@@ -14,10 +15,13 @@ export interface UserQueryInterface {
     password?: string;
 }
 
-export const createNewUser = (newUserDetails: UserInterface) => {
+export const createNewUser = async (newUserDetails: UserInterface) => {
     const execution = () => {
-        const newUser = new User(newUserDetails);
-        newUser.save();
+        User.find(newUserDetails, (err, res) => {
+            if (res.length === 0) throw new Error("a user with that username already exists");
+            const newUser = new User(newUserDetails);
+            newUser.save();
+        })
     };
     db({ callbacks: [execution] });
 };
@@ -27,23 +31,22 @@ export const deleteExistingUser = (existingUserDetails: UserQueryInterface) => {
         try {
             User.deleteOne(existingUserDetails);
         } catch (error) {
-            console.error(error);
+            throw error;
         }
     };
     db({ callbacks: [execution] });
 };
 
-export const doesUserExist = (existingUserDetails: UserQueryInterface) => {
-    let result = null;
+export const doesUserExist = async (existingUserDetails: UserQueryInterface) => {
     const execution = () => {
         try {
-            User.find(existingUserDetails).exec((err, users) => {
-                result = users.length > 0;
+            User.find(existingUserDetails, (err, res) => {
+                if (err) throw err;
+                if (res.length === 0) throw new Error("no documents returned from query");
             });
         } catch (error) {
-            console.error(error);
+            throw error;
         }
-    };
+    }
     db({ callbacks: [execution] });
-    return result;
 };

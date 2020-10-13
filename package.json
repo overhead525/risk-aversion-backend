@@ -6,6 +6,8 @@
     "scripts": {
         "dev": "nodemon",
         "devAuth": "nodemon",
+        "server": "ts-node ./src/server.ts",
+        "authServer": "ts-node ./src/authServer.ts",
         "test": "jest"
     },
     "keywords": [],

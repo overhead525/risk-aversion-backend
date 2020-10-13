@@ -9,3 +9,12 @@ export const storeRefreshToken = (token: string) => {
     }
     db({ callbacks: [execution] });
 }
+
+export const deleteRefreshToken = (token: string) => {
+    const execution = () => {
+        RefreshToken.deleteMany({ token: token }, (err: Error) => {
+            if (err) return err;
+        })
+    }
+    db({ callbacks: [execution] });
+}

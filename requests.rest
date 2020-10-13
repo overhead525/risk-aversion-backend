@@ -1,21 +1,26 @@
 POST http://localhost:3000/graphql/init
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTG1hbGNvbG1SIiwiaWF0IjoxNjAyNjAwMTAxLCJleHAiOjE2MDI2MDAxNjF9.Y3W3K8TwnRYeTHcSlwLdAaHftqv6eeGvHjhE0mLwCls
 
 {
-    "principal": 100000,
-    "riskDecimal": 0.01,
-    "rewardDecimal": 0.03,
-    "winDecimal": 0.55,
-    "lossDecimal": 0.45,
-    "breakEvenDecimal": 0.25,
-    "numOfTrades": 50,
-    "numOfSimulations": 1000
+    "simName": "tradingUp",
+    "params": {
+        "principal": 100000,
+        "riskDecimal": 0.01,
+        "rewardDecimal": 0.03,
+        "winDecimal": 0.55,
+        "lossDecimal": 0.45,
+        "breakEvenDecimal": 0.25,
+        "numOfTrades": 50,
+        "numOfSimulations": 1000
+    }
 }
 
 ###
 
 POST http://localhost:3000/graphql/configurations
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDI1MzMyODIsImV4cCI6MTYwMjUzNTA4Mn0.0SLhyV7P5OwurvVJEK8QHFSKj7uOYQY56dMW8bpg89Y
 
 [
     "principal",
@@ -27,6 +32,7 @@ Content-Type: application/json
 
 POST http://localhost:3000/graphql/simulations
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTG1hbGNvbG1SIiwiaWF0IjoxNjAyNTk5MDQyLCJleHAiOjE2MDI1OTkxMDJ9.nWOphYwDwt4ZFdvyO6jlZpAbTIy9z_AvvmmyLi58Xio
 
 [
     "simID",
@@ -38,7 +44,7 @@ Content-Type: application/json
 
 POST http://localhost:3000/graphql/simulations/07078817-22c2-4638-8a2f-73c5fee2680a
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDI1MTU1NjUsImV4cCI6MTYwMjUxNTY4NX0.4JDfvBd3Reh1GFJyK49VAcAET_6gZo9tWcFkRR4yOn0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDI1MzQ3NTIsImV4cCI6MTYwMjUzNDc4Mn0.KbhoH25O8fqp4tUjg8ss9BwSpXKGW_QtCfHogjPfx1c
 
 [
     "maxPortfolio",
@@ -49,6 +55,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDI1MTU1N
 
 POST http://localhost:3000/graphql/configurations/b5e83578-6f28-4d3f-82ea-ed3aeb27fa0b
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDI1MzMyODIsImV4cCI6MTYwMjUzNTA4Mn0.0SLhyV7P5OwurvVJEK8QHFSKj7uOYQY56dMW8bpg89Y
 
 [
     "principal",
@@ -60,9 +67,11 @@ Content-Type: application/json
 
 POST http://localhost:4000/auth/login
 Authorization: Bearer a8f3ee3a8e372f46c77b47287523818e02a412908f7505c2e7a3ccb9b3741cdcdd58cd15e2376a833eb0c0f4a37b1dd46aa4b79667ba03ed3f84f79149e48891
+Content-Type: application/json
 
 {
-    "username": "LmalcolmR"
+    "username": "LmalcolmR",
+    "password": "lilsquirt56"
 }
 
 ###
@@ -71,5 +80,35 @@ POST http://localhost:4000/auth/token
 Content-Type: application/json
 
 {
-    "token": 
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDI1MzQ1NDJ9.a2YXIoYS9Io0g1_Ssd9AksUr3whvmbsvD8PwrkCgPRE"
+}
+
+###
+
+DELETE  http://localhost:4000/auth/logout
+Content-Type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDI1MzQ1NDJ9.a2YXIoYS9Io0g1_Ssd9AksUr3whvmbsvD8PwrkCgPRE"
+}
+
+###
+
+POST http://localhost:4000/auth/register
+Content-Type: application/json
+
+{
+    "register": true,
+    "username": "videlLovesGohan",
+    "password": "greatsaiyaman"
+}
+
+###
+
+GET http://localhost:4000/auth/find
+Content-Type: application/json
+
+{
+    "username": "LmalcolmR",
+    "password": "lilsquirt56"
 }

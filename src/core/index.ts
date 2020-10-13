@@ -13,14 +13,17 @@ const router = express.Router();
 
 interface coreConfigurationsRequest extends express.Request {
     body: {
-        principal: number;
-        riskDecimal: number;
-        rewardDecimal: number;
-        winDecimal: number;
-        lossDecimal: number;
-        breakEvenDecimal: number;
-        numOfTrades: number;
-        numOfSimulations: number;
+        simName: string;
+        params: {
+            principal: number;
+            riskDecimal: number;
+            rewardDecimal: number;
+            winDecimal: number;
+            lossDecimal: number;
+            breakEvenDecimal: number;
+            numOfTrades: number;
+            numOfSimulations: number;
+        }
     };
 }
 
@@ -29,8 +32,13 @@ interface coreQueryRequest extends express.Request {
 }
 
 interface coreSimOutputResponse {
-    maxPortfolio: number;
-    minPortfolio: number;
+    simulate: {
+        result: {
+            simID: string;
+            maxPortfolio: number;
+            minPortfolio: number;
+        }
+    }
 }
 
 router.post(
@@ -176,7 +184,7 @@ router.post(
     authenticateToken,
     async (req: coreConfigurationsRequest, res: express.Response) => {
         // Craft graphql request from client request
-        const mutationParams = simulationInitRequest(req.body);
+        const mutationParams = simulationInitRequest(req.body.params);
 
         // Send graphql request to python graphql server and await response
         try {
@@ -189,6 +197,7 @@ router.post(
                         ${mutationParams}
                     ) { 
                         result {
+                            simID,
                             maxPortfolio,
                             minPortfolio
                         }
@@ -198,8 +207,9 @@ router.post(
             });
 
             const responseJSON = await response.json();
+            const responseData = responseJSON.data;
 
-            res.status(200).send(responseJSON.data);
+            res.status(200).send(responseData);
         } catch (error) {
             res.status(500).send(
                 "Something wrong happened with the simulation"
