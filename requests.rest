@@ -1,6 +1,6 @@
 POST http://localhost:3000/graphql/init
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTG1hbGNvbG1SIiwiaWF0IjoxNjAyNjAwMTAxLCJleHAiOjE2MDI2MDAxNjF9.Y3W3K8TwnRYeTHcSlwLdAaHftqv6eeGvHjhE0mLwCls
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTG1hbGNvbG1SIiwiaWF0IjoxNjAyNjk3Nzc0LCJleHAiOjE2MDI2OTg2NzR9.7Zsgks0gWM0AxGET6t3uLQIXXxXHIANkyqlIA6Oe7EY
 
 {
     "simName": "tradingUp",
@@ -14,6 +14,16 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTG1hbGNvb
         "numOfTrades": 50,
         "numOfSimulations": 1000
     }
+}
+
+###
+
+GET http://localhost:3000/graphql/mySimulations
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTG1hbGNvbG1SIiwiaWF0IjoxNjAyNzAxMDI1LCJleHAiOjE2MDI3MDE5MjV9.C1Abku961MCs9Dv7NbD6WPFDscxVmTOp_p4vCuIiWkE
+
+{
+    "get": "configurations"
 }
 
 ###
@@ -104,10 +114,6 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:4000/auth/find
+GET http://localhost:4000/auth/
 Content-Type: application/json
-
-{
-    "username": "LmalcolmR",
-    "password": "lilsquirt56"
-}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTG1hbGNvbG1SIiwiaWF0IjoxNjAyNjk5ODgyLCJleHAiOjE2MDI3MDA3ODJ9.CFvdHOzQXzKohFq6V52yA0JyR1RxPmXOG9bZINp9ARY

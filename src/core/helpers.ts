@@ -4,6 +4,14 @@ import {
     ConfigurationParamsStrict,
     SimulationResultParams,
 } from "../types/query";
+import * as mongoose from "mongoose";
+
+require("isomorphic-fetch");
+
+import { Request, Response, NextFunction } from "express";
+import { decode } from "jsonwebtoken";
+import { useDB } from "../../database";
+import { User, UserDocument } from "../models";
 
 const parseQueryArgToString = (arr: Array<any>, separator: string) => {
     return arr.join(separator);
@@ -29,3 +37,71 @@ export const simulationsRequest = (simParams: Array<any>) => {
 export const simulationInitRequest = (simConfig: ConfigurationParamsStrict) => {
     return parseMutationArgToString(simConfig, "\n");
 };
+
+export const triggerQuery = (req: Request, res: Response, next: NextFunction) => {
+    if (req.body.get === "simulations" || req.body.get === "configurations") {
+        res.locals.trigger = req.body.get;
+    }
+    next();
+}
+
+export const getUserSimIDs = (req: Request, res: Response, next: NextFunction) => {
+    const authHeader = req.headers["authorization"];  // Expecting something like: "Bearer <accessToken> <refreshToken>"
+    const accessToken = authHeader.split(" ")[1];
+    
+    const username = decode(accessToken)["name"];
+
+    useDB(() => {
+        User.findOne({ username: username }, async (err, userDoc: UserDocument) => {
+            if (err) return res.locals.error = err;
+            const userSimIDs = userDoc.simulations;
+            res.locals.userSimIDs = userSimIDs;
+            await mongoose.connection.close();
+            next();
+        })
+    });
+}
+
+export const craftIDGQLQuery = (req: Request, res: Response, next: NextFunction) => {
+    if (res.locals.userSimIDs) {
+        const simIDs: Array<{
+            _id: any;
+            simName: string;
+            simID: string;
+        }> = res.locals.userSimIDs;
+        let queryBody = "";
+        let trigger = "";
+        if (res.locals.trigger === "simulations") { 
+            trigger = "simulationResultById";
+            simIDs.forEach((obj, index) => {
+                const queryAddition = `${obj.simName}_${index}: ${trigger}(simID: "${obj.simID}") {
+                    simID
+                    maxPortfolio
+                    minPortfolio
+                }
+                ` 
+                queryBody += queryAddition;
+            });
+        }
+        if (res.locals.trigger === "configurations") { 
+            trigger = "configurationById";
+            simIDs.forEach((obj, index) => {
+                const queryAddition = `${obj.simName}_${index}: ${trigger}(simID: "${obj.simID}") {
+                    principal
+                    riskDecimal
+                    rewardDecimal
+                    winDecimal
+                    lossDecimal
+                    breakEvenDecimal
+                    numOfTrades
+                    numOfSimulations
+                }
+                ` 
+                queryBody += queryAddition;
+            });
+        }
+        const query = `{\n${queryBody}}`
+        res.locals.query = query;
+    }
+    next();
+}
