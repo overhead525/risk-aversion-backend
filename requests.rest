@@ -1,6 +1,6 @@
 POST http://localhost:3000/graphql/init
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTG1hbGNvbG1SIiwiaWF0IjoxNjAyNjk3Nzc0LCJleHAiOjE2MDI2OTg2NzR9.7Zsgks0gWM0AxGET6t3uLQIXXxXHIANkyqlIA6Oe7EY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTG1hbGNvbG1SIiwiaWF0IjoxNjAzNjIyNzU1LCJleHAiOjE2MDM2MjM2NTV9.M_wugJnvmBjUnhGiFf_XvWeRnPJub7eRO68DE1IJ7Uc
 
 {
     "simName": "tradingUp",
@@ -13,18 +13,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTG1hbGNvb
         "breakEvenDecimal": 0.25,
         "numOfTrades": 50,
         "numOfSimulations": 1000
-    }
+    },
 }
 
 ###
 
-GET http://localhost:3000/graphql/mySimulations
+GET http://localhost:3000/graphql/mySimulations/simulations
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTG1hbGNvbG1SIiwiaWF0IjoxNjAyNzAxMDI1LCJleHAiOjE2MDI3MDE5MjV9.C1Abku961MCs9Dv7NbD6WPFDscxVmTOp_p4vCuIiWkE
-
-{
-    "get": "configurations"
-}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTG1hbGNvbG1SIiwiaWF0IjoxNjAzMjkxNjU4LCJleHAiOjE2MDMyOTI1NTh9.jZ6pA6hW7fzQE8_wf8w-MrlMPFvjaynN90WzhtgYD2o
 
 ###
 
@@ -108,8 +104,8 @@ POST http://localhost:4000/auth/register
 Content-Type: application/json
 
 {
-    "username": "sakura",
-    "password": "harunoclan"
+    "username": "saka",
+    "password": "nobending"
 }
 
 ###

@@ -18,6 +18,7 @@ router.get("/", isAuthenticated, (req: express.Request, res: express.Response, n
             refreshToken: res.locals.refreshToken
         });
     }
+    res.setHeader("Access-Control-Allow-Origin", "*");
     return res.status(500).json({ message: "something went wrong during authentication. Log in again please" });
 });
 
@@ -30,12 +31,12 @@ router.post("/login", (req: express.Request, res: express.Response, next: NextFu
             User.findOne({ username, password }, async (err, userDoc) => {
                 if (err) {
                     res.status(500).json({ message: "something went wrong with the request" });
-                    mongoose.connection.close();
+                    await mongoose.connection.close();
                     return next(err);
                 }
                 if (!userDoc) {
                     res.status(401).json({ message: "cannot authenticate user" });
-                    mongoose.connection.close();
+                    await mongoose.connection.close();
                     return next(null);
                 }
                 const user = { name: username };
@@ -46,7 +47,7 @@ router.post("/login", (req: express.Request, res: express.Response, next: NextFu
                 await newRefreshToken.save();
                 
                 res.json({ accessToken: accessToken, refreshToken: refreshToken });
-                mongoose.connection.close();
+                await mongoose.connection.close();
             })
         })
     } else {
@@ -63,13 +64,11 @@ router.post("/register", (req: express.Request, res: express.Response, next: Nex
             User.findOne({ username, password }, async (err, userDoc) => {
                 if (err) {
                     res.status(500).json({ message: "something went wrong with the request" });
-                    mongoose.connection.close();
-                    return next(err);
+                    await mongoose.connection.close();
                 }
                 if (userDoc) {
                     res.status(304).json("did not register user since user already exists");
-                    mongoose.connection.close();
-                    return next(null);
+                    await mongoose.connection.close();
                 }
                 const newUser = new User({ username, password });
                 await newUser.save();
@@ -82,12 +81,11 @@ router.post("/register", (req: express.Request, res: express.Response, next: Nex
                 await newRefreshToken.save();
 
                 res.json({ accessToken: accessToken, refreshToken: refreshToken });
-                mongoose.connection.close();
+                await mongoose.connection.close();
             })
         });
     } else {
         res.status(403).json("the request was missing the required parameters");
-        return next(null);
     }
 });
 
@@ -96,20 +94,20 @@ router.post("/token", (req: express.Request, res: express.Response) => {
     if (req.body.token) {
         const refreshToken = req.body.token;
         useDB(() => {
-            RefreshToken.findOne({ token: refreshToken }, (err: Error, doc: mongoose.Document) => {
+            RefreshToken.findOne({ token: refreshToken }, async (err: Error, doc: mongoose.Document) => {
                 if (!doc) {
-                    mongoose.connection.close();
+                    await mongoose.connection.close();
                     return res.status(403).json("refresh token not found")
                 };
-                jwt.verify(refreshToken, process.env["REFRESH_TOKEN_SECRET"], (err, user) => {
+                jwt.verify(refreshToken, process.env["REFRESH_TOKEN_SECRET"], async (err, user) => {
                     if (err) {
-                        mongoose.connection.close();
+                        await mongoose.connection.close();
                         return res.status(403).json("")
                     };
                     const accessToken = generateAccessToken({ name: user.name });
                     res.json({ accessToken: accessToken });
                 })
-                mongoose.connection.close();
+                await mongoose.connection.close();
             });
         })
     } else {
@@ -117,26 +115,27 @@ router.post("/token", (req: express.Request, res: express.Response) => {
     }
 });
 
-router.delete("/logout", (req: express.Request, res: express.Response, next: express.NextFunction) => {
+router.post("/logout", (req: express.Request, res: express.Response, next: express.NextFunction) => {
     if (req.body.token) {
         const refreshToken = req.body.token;
         useDB(() => {
             RefreshToken.findOne({ token: refreshToken }, async (err: Error, doc: mongoose.Document) => {
                 if (err) {
                     res.status(500).json("could not logout correctly");
+                    await mongoose.connection.close();
                 }
                 else if (!doc) {
                     res.status(204).json("refresh token not found");
-                    mongoose.connection.close();
+                    await mongoose.connection.close();
                 } else {
                     await doc.remove();
                     res.status(200).json("refresh token successfully deleted");
-                    mongoose.connection.close();
+                    await mongoose.connection.close();
                 };
             })
         });
     } else {
-        res.sendStatus(403).json("request missing required parameter(s)");
+        res.status(403).json("request missing required parameter(s)");
     }
 });
 

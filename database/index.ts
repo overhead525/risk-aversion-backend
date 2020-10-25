@@ -51,6 +51,7 @@ export const useDB = (cb: Function) => {
 
     mongoose.connection
         .once("open", () => {
+            console.log(`database connection opened to MongoDB on port ${mongoose.connection.port}`);
             try {
                 cb();
             } catch (error) {
@@ -59,5 +60,8 @@ export const useDB = (cb: Function) => {
         })
         .on("error", (error) => {
             console.error("error is", error);
+        })
+        .on("close", () => {
+            console.log(`database conneciton closed on port: ${mongoose.connection.port}`)
         })
 }
