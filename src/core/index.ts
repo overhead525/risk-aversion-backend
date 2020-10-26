@@ -1,5 +1,6 @@
 import * as express from "express";
 import * as mongoose from "mongoose";
+import * as jwt from "jsonwebtoken";
 import * as fs from "fs";
 
 require("isomorphic-fetch");
@@ -247,6 +248,18 @@ router.post(
 
       const responseJSON = await response.json();
       const responseData: coreSimOutputResponse = responseJSON.data;
+
+      const response2 = await fetch(
+        `${process.env["RESOURCE_SERVER_URL"]}/image/${responseData.simulate.result.simID}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env["PERMANENT_ACCESS_TOKEN"]}`,
+          },
+        }
+      );
+      console.log(response2);
 
       const tokenPayload = decodeToken(req);
 
