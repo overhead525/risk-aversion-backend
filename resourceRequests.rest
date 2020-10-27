@@ -1,10 +1,10 @@
-GET http://localhost:6000/resource/image/b5e83578-6f28-4d3f-82ea-ed3aeb27fa0b
+GET http://localhost:5050/resource/image/b5e83578-6f28-4d3f-82ea-ed3aeb27fa0b
 Content-Type: application/json
 Authorization: Bearer {{$dotenv PERMANENT_ACCESS_TOKEN}}
 
 ###
 
-POST http://localhost:6000/resource/image/b5e83578-6f28-4d3f-82ea-ed3aeb27fa0b
+POST http://localhost:5050/resource/image/b5e83578-6f28-4d3f-82ea-ed3aeb27fa0b
 Content-Type: application/json
 Authorization: Bearer {{$dotenv PERMANENT_ACCESS_TOKEN}}
 

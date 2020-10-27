@@ -10,7 +10,7 @@ router.get(
   (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
       useDB(() => {
-        Picture.find({ simID: req.params.sidID }).then(async (data) => {
+        Picture.findOne({ simID: req.params.sidID }).then(async (data) => {
           await mongoose.connection.close();
           res.send(data);
         });

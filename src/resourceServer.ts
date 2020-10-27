@@ -15,4 +15,4 @@ app.use(morgan("dev"));
 
 app.use("/resource", allowHeader, authenticateToken, resource);
 
-app.listen(6000, () => console.log("Resource server running on port 6000 🪓"));
+app.listen(5050, () => console.log("Resource server running on port 5050 🪓"));
