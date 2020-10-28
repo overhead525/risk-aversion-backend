@@ -1,38 +1,31 @@
 import * as mongoose from "mongoose";
 
-export type TradingProfileDocument = mongoose.Document & {
-  risk: number;
-  reward: number;
-  winPercentage: number;
-  lossPercentage: number;
-};
+export interface Picture {
+  img: {
+    data: Buffer;
+    contentType: String;
+  };
+}
 
-const tradingProfileSchema = new mongoose.Schema({
-  risk: Number,
-  reward: Number,
-  winPercentage: Number,
-  lossPercentage: Number,
+const pictureSchema = new mongoose.Schema({
+  img: {
+    data: Buffer,
+    contentType: String,
+  },
 });
 
 const userSchema = new mongoose.Schema({
   username: String,
   email: String,
   password: String,
-  simulations: [{ simName: String, simID: String }],
-  tradingProfile: tradingProfileSchema,
+  simulations: [{ simName: String, simID: String, simPic: pictureSchema }],
 });
 
 export type UserDocument = mongoose.Document & {
   username: string;
   email?: string;
   password: string;
-  simulations?: [{ simName: string; simID: string }];
-  tradingProfile?: {
-    risk: number;
-    reward: number;
-    winPercentage: number;
-    lossPercentage: number;
-  };
+  simulations?: [{ simName: string; simID: string; simPic: Picture }];
 };
 
 export const User = mongoose.model("User", userSchema, "users");
@@ -46,21 +39,3 @@ export const RefreshToken = mongoose.model(
   refreshTokenSchema,
   "tokens"
 );
-
-export type PictureDocument = mongoose.Document & {
-  simID: string;
-  img: {
-    data: String;
-    contentType: String;
-  };
-};
-
-const pictureSchema = new mongoose.Schema({
-  simID: String,
-  img: {
-    data: String,
-    contentType: String,
-  },
-});
-
-export const Picture = mongoose.model("Picture", pictureSchema, "resource");

@@ -1,6 +1,7 @@
 POST http://localhost:3000/graphql/init
 Content-Type: application/json
-Authorization: Bearer {{$dotenv PERMANENT_ACCESS_TOKEN}}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTG1hbGNvbG1SIiwiaWF0IjoxNjAzNjIyNzU1LCJleHAiOjE2MDM2MjM2NTV9.M_wugJnvmBjUnhGiFf_XvWeRnPJub7eRO68DE1IJ7Uc
+
 {
     "simName": "tradingUp",
     "params": {
@@ -19,13 +20,13 @@ Authorization: Bearer {{$dotenv PERMANENT_ACCESS_TOKEN}}
 
 GET http://localhost:3000/graphql/mySimulations/simulations
 Content-Type: application/json
-Authorization: Bearer {{$dotenv PERMANENT_ACCESS_TOKEN}}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTG1hbGNvbG1SIiwiaWF0IjoxNjAzMjkxNjU4LCJleHAiOjE2MDMyOTI1NTh9.jZ6pA6hW7fzQE8_wf8w-MrlMPFvjaynN90WzhtgYD2o
 
 ###
 
 POST http://localhost:3000/graphql/configurations
 Content-Type: application/json
-Authorization: Bearer {{$dotenv PERMANENT_ACCESS_TOKEN}}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDI1MzMyODIsImV4cCI6MTYwMjUzNTA4Mn0.0SLhyV7P5OwurvVJEK8QHFSKj7uOYQY56dMW8bpg89Y
 
 [
     "principal",
@@ -37,7 +38,7 @@ Authorization: Bearer {{$dotenv PERMANENT_ACCESS_TOKEN}}
 
 POST http://localhost:3000/graphql/simulations
 Content-Type: application/json
-Authorization: Bearer {{$dotenv PERMANENT_ACCESS_TOKEN}}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTG1hbGNvbG1SIiwiaWF0IjoxNjAyNTk5MDQyLCJleHAiOjE2MDI1OTkxMDJ9.nWOphYwDwt4ZFdvyO6jlZpAbTIy9z_AvvmmyLi58Xio
 
 [
     "simID",
@@ -49,7 +50,7 @@ Authorization: Bearer {{$dotenv PERMANENT_ACCESS_TOKEN}}
 
 POST http://localhost:3000/graphql/simulations/07078817-22c2-4638-8a2f-73c5fee2680a
 Content-Type: application/json
-Authorization: Bearer {{$dotenv PERMANENT_ACCESS_TOKEN}}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDI1MzQ3NTIsImV4cCI6MTYwMjUzNDc4Mn0.KbhoH25O8fqp4tUjg8ss9BwSpXKGW_QtCfHogjPfx1c
 
 [
     "maxPortfolio",
@@ -60,7 +61,7 @@ Authorization: Bearer {{$dotenv PERMANENT_ACCESS_TOKEN}}
 
 POST http://localhost:3000/graphql/configurations/b5e83578-6f28-4d3f-82ea-ed3aeb27fa0b
 Content-Type: application/json
-Authorization: Bearer {{$dotenv PERMANENT_ACCESS_TOKEN}}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDI1MzMyODIsImV4cCI6MTYwMjUzNTA4Mn0.0SLhyV7P5OwurvVJEK8QHFSKj7uOYQY56dMW8bpg89Y
 
 [
     "principal",
@@ -71,8 +72,8 @@ Authorization: Bearer {{$dotenv PERMANENT_ACCESS_TOKEN}}
 ###
 
 POST http://localhost:4000/auth/login
+Authorization: Bearer a8f3ee3a8e372f46c77b47287523818e02a412908f7505c2e7a3ccb9b3741cdcdd58cd15e2376a833eb0c0f4a37b1dd46aa4b79667ba03ed3f84f79149e48891
 Content-Type: application/json
-Authorization: Bearer {{$dotenv PERMANENT_ACCESS_TOKEN}}
 
 {
     "username": "LmalcolmR",
@@ -111,4 +112,4 @@ Content-Type: application/json
 
 GET http://localhost:4000/auth/
 Content-Type: application/json
-Authorization: Bearer {{$dotenv PERMANENT_ACCESS_TOKEN}}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTG1hbGNvbG1SIiwiaWF0IjoxNjAyNjk5ODgyLCJleHAiOjE2MDI3MDA3ODJ9.CFvdHOzQXzKohFq6V52yA0JyR1RxPmXOG9bZINp9ARY
