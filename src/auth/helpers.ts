@@ -110,5 +110,5 @@ export const allowHeader = (
   res.append("Access-Control-Allow-Origin", "http://localhost:5000");
   res.append("Access-Control-Allow-Methods", "POST, GET");
   res.append("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  next();
+  return next();
 };

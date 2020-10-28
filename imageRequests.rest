@@ -1,0 +1,7 @@
+GET http://localhost:5050/image/12345678
+Content-Type: application/json
+Authorization: Bearer {{$dotenv PERMANENT_ACCESS_TOKEN}}
+
+###
+
+GET http://localhost:5050/image/hello
