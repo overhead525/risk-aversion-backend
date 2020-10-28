@@ -2,6 +2,7 @@ import { config } from "dotenv";
 config();
 
 import * as express from "express";
+import * as mongoose from "mongoose";
 import * as morgan from "morgan";
 
 // Middlewares
@@ -12,9 +13,16 @@ import auth from "./auth";
 
 const app = express();
 
-app.use(express.json());
-app.use(morgan("dev"));
+mongoose
+  .connect(process.env["DATABASE_URL"], {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    app.use(express.json());
+    app.use(morgan("dev"));
 
-app.use("/auth", allowHeader, auth);
+    app.use("/auth", allowHeader, auth);
 
-app.listen(4000, () => console.log("server running on port 4000 🚀"));
+    app.listen(4000, () => console.log("server running on port 4000 🚀"));
+  });

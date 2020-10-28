@@ -104,8 +104,8 @@ POST http://localhost:4000/auth/register
 Content-Type: application/json
 
 {
-    "username": "saka",
-    "password": "nobending"
+    "username": "katara",
+    "password": "waterbending"
 }
 
 ###
