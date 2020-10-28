@@ -1,6 +1,4 @@
 import * as express from "express";
-import * as mongoose from "mongoose";
-import * as fs from "fs";
 
 require("isomorphic-fetch");
 
@@ -12,7 +10,6 @@ import {
   triggerQuery,
 } from "./helpers";
 import { authenticateToken, decodeToken } from "../auth/helpers";
-import { useDB } from "../../database";
 import { User, UserDocument } from "../models";
 import { getUserSimIDs } from "./helpers";
 
@@ -32,10 +29,6 @@ interface coreConfigurationsRequest extends express.Request {
       numOfSimulations: number;
     };
   };
-}
-
-interface coreQueryRequest extends express.Request {
-  body: Array<any>;
 }
 
 interface coreSimOutputResponse {
@@ -68,9 +61,11 @@ router.get(
 
         const responseJSON = await response.json();
 
-        res.status(200).send(responseJSON.data);
+        return res.status(200).send(responseJSON.data);
       } catch (error) {
-        res.status(500).send("Something wrong happened with the simulation");
+        return res
+          .status(500)
+          .send("Something wrong happened with the simulation");
       }
     }
   }
@@ -99,9 +94,11 @@ router.post(
 
       const responseJSON = await response.json();
 
-      res.status(200).send(responseJSON.data);
+      return res.status(200).send(responseJSON.data);
     } catch (error) {
-      res.status(500).send("Something wrong happened with the simulation");
+      return res
+        .status(500)
+        .send("Something wrong happened with the simulation");
     }
   }
 );
@@ -129,9 +126,11 @@ router.post(
 
       const responseJSON = await response.json();
 
-      res.status(200).send(responseJSON.data);
+      return res.status(200).send(responseJSON.data);
     } catch (error) {
-      res.status(500).send("Something wrong happened with the simulation");
+      return res
+        .status(500)
+        .send("Something wrong happened with the simulation");
     }
   }
 );
@@ -161,17 +160,14 @@ router.post(
 
       const responseJSON = await response.json();
 
-      res.status(200).send(responseJSON.data);
+      return res.status(200).send(responseJSON.data);
     } catch (error) {
-      res
+      return res
         .status(500)
         .send(
           `A simulation with the id: ${req.params["simID"]} could not be found.`
         );
     }
-
-    // Upon response from pyserver (which should be json), log request and response to database
-    // Send json to client
   }
 );
 
@@ -200,17 +196,14 @@ router.post(
 
       const responseJSON = await response.json();
 
-      res.status(200).send(responseJSON.data);
+      return res.status(200).send(responseJSON.data);
     } catch (error) {
-      res
+      return res
         .status(500)
         .send(
           `A configuration with the id: ${req.params["simID"]} could not be found.`
         );
     }
-
-    // Upon response from pyserver (which should be json), log request and response to database
-    // Send json to client
   }
 );
 
@@ -250,38 +243,34 @@ router.post(
 
       const tokenPayload = decodeToken(req);
 
-      useDB(() => {
-        User.findOne(
-          { username: tokenPayload["name"] },
-          async (err, userDoc: UserDocument) => {
-            if (err) return next(err);
-            if (!userDoc) {
-              res.status(404).json("user not found");
-              return next(err);
-            }
-            const currentUserSimulations = userDoc.get("simulations");
-            const newUserSimulationsArr = [
-              ...currentUserSimulations,
-              {
-                simName: req.body.simName,
-                simID: responseData.simulate.result.simID,
-              },
-            ];
-            // @ts-ignore
-            userDoc.simulations = newUserSimulationsArr;
-            await userDoc.save();
-            await mongoose.connection.close();
+      User.findOne(
+        { username: tokenPayload["name"] },
+        async (err, userDoc: UserDocument) => {
+          if (err) return next(err);
+          if (!userDoc) {
+            res.status(404).json("user not found");
+            return next(err);
           }
-        );
-      });
+          const currentUserSimulations = userDoc.get("simulations");
+          const newUserSimulationsArr = [
+            ...currentUserSimulations,
+            {
+              simName: req.body.simName,
+              simID: responseData.simulate.result.simID,
+            },
+          ];
+          // @ts-ignore
+          userDoc.simulations = newUserSimulationsArr;
+          await userDoc.save();
+        }
+      );
 
-      res.status(200).send(responseData);
+      return res.status(200).send(responseData);
     } catch (error) {
-      res.status(500).send("Something wrong happened with the simulation");
+      return res
+        .status(500)
+        .send("Something wrong happened with the simulation");
     }
-
-    // Upon response from pyserver (which should be json), log request and response to database
-    // Send json to client
   }
 );
 

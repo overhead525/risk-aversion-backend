@@ -1,17 +1,10 @@
-import { config } from "dotenv/types";
-import {
-  ConfigurationParams,
-  ConfigurationParamsStrict,
-  SimulationResultParams,
-} from "../types/query";
-import * as mongoose from "mongoose";
+import { ConfigurationParamsStrict } from "../types/query";
 import * as _ from "lodash";
 
 require("isomorphic-fetch");
 
 import { Request, Response, NextFunction } from "express";
 import { decode } from "jsonwebtoken";
-import { useDB } from "../../database";
 import { User, UserDocument } from "../models";
 
 const parseQueryArgToString = (arr: Array<any>, separator: string) => {
@@ -44,11 +37,10 @@ export const triggerQuery = (
   res: Response,
   next: NextFunction
 ) => {
-  console.log(req.params);
   if (req.params.get === "simulations" || req.params.get === "configurations") {
     res.locals.trigger = req.params.get;
   }
-  next();
+  return next();
 };
 
 export const getUserSimIDs = (
@@ -61,14 +53,11 @@ export const getUserSimIDs = (
 
   const username = decode(accessToken)["name"];
 
-  useDB(() => {
-    User.findOne({ username: username }, async (err, userDoc: UserDocument) => {
-      if (err) return (res.locals.error = err);
-      const userSimIDs = userDoc.simulations;
-      res.locals.userSimIDs = userSimIDs;
-      await mongoose.connection.close();
-      next();
-    });
+  User.findOne({ username: username }, async (err, userDoc: UserDocument) => {
+    if (err) return (res.locals.error = err);
+    const userSimIDs = userDoc.simulations;
+    res.locals.userSimIDs = userSimIDs;
+    return next();
   });
 };
 
@@ -116,8 +105,7 @@ export const craftIDGQLQuery = (
       });
     }
     const query = `{\n${queryBody}}`;
-    console.log(query);
     res.locals.query = query;
   }
-  next();
+  return next();
 };
