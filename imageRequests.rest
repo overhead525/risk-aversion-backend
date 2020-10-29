@@ -1,0 +1,9 @@
+GET http://localhost:5050/image/12345678
+Content-Type: application/json
+Authorization: Bearer {{$dotenv PERMANENT_ACCESS_TOKEN}}
+
+###
+
+POST http://localhost:5050/image/87654321/https%3A%2F%2Famazon.s2.com%2Fsie30fkd8s89jsd_389f
+Content-Type: application/json
+Authorization: Bearer {{$dotenv PERMANENT_ACCESS_TOKEN}}
