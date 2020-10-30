@@ -1,5 +1,38 @@
 import * as mongoose from "mongoose";
 
+const profileSchema = new mongoose.Schema({
+  firstName: String,
+  tradingHabits: {
+    risk: Number,
+    reward: Number,
+    lossPercentage: Number,
+    winPercentage: Number,
+  },
+  goalPortfolio: Number,
+});
+
+export interface Profile {
+  firstName: string;
+  tradingHabits: {
+    risk: number;
+    reward: number;
+    lossPercentage: number;
+    winPercentage: number;
+  };
+  goalPortfolio: number;
+}
+
+export type ProfileDocument = mongoose.Document & {
+  firstName: string;
+  tradingHabits: {
+    risk: number;
+    reward: number;
+    lossPercentage: number;
+    winPercentage: number;
+  };
+  goalPortfolio: number;
+};
+
 const pictureSchema = new mongoose.Schema({
   simID: String,
   imgURL: String,
@@ -17,6 +50,7 @@ const userSchema = new mongoose.Schema({
   email: String,
   password: String,
   simulations: [{ simName: String, simID: String }],
+  profile: profileSchema,
 });
 
 export type UserDocument = mongoose.Document & {
@@ -24,6 +58,7 @@ export type UserDocument = mongoose.Document & {
   email?: string;
   password: string;
   simulations?: [{ simName: string; simID: string }];
+  profile?: Profile;
 };
 
 export const User = mongoose.model("User", userSchema, "users");
