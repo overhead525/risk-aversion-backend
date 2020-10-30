@@ -2,6 +2,7 @@ import * as mongoose from "mongoose";
 
 const profileSchema = new mongoose.Schema({
   firstName: String,
+  lastName: String,
   tradingHabits: {
     risk: Number,
     reward: Number,
@@ -13,6 +14,7 @@ const profileSchema = new mongoose.Schema({
 
 export interface Profile {
   firstName: string;
+  lastName: string;
   tradingHabits: {
     risk: number;
     reward: number;
@@ -24,6 +26,7 @@ export interface Profile {
 
 export type ProfileDocument = mongoose.Document & {
   firstName: string;
+  lastName: string;
   tradingHabits: {
     risk: number;
     reward: number;
