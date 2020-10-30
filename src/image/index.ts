@@ -12,19 +12,19 @@ router.get(
       return res.status(400).json("No simulation ID provided!");
     const pictureDoc = await Picture.findOne({ simID: req.params.simID });
     if (!pictureDoc) return res.sendStatus(404);
-    return res.json(await pictureDoc.get("imgURL"));
+    return res.json(await pictureDoc.get("imgKey"));
   }
 );
 
 router.post(
-  "/:simID/:imgURL",
+  "/:simID/:imgKey",
   authenticateToken,
   async (req: express.Request, res: express.Response) => {
     const simID = req.params.simID;
-    const imgURL = decodeURI(req.params.imgURL);
+    const imgKey = decodeURI(req.params.imgKey);
     try {
-      if (!simID || !imgURL)
-        return res.status(400).json("Missing simID or imgURL in request");
+      if (!simID || !imgKey)
+        return res.status(400).json("Missing simID or imgKey in request");
       const pictureDoc = await Picture.findOne({ simID: simID });
       if (pictureDoc)
         return res
@@ -32,7 +32,7 @@ router.post(
           .json(`Picture for simulation: ${simID} already exists`);
       const newPictureParams = {
         simID,
-        imgURL,
+        imgKey,
       };
       const newPicture = new Picture(newPictureParams);
       await newPicture.save();

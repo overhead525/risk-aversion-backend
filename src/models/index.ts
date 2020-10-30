@@ -38,12 +38,12 @@ export type ProfileDocument = mongoose.Document & {
 
 const pictureSchema = new mongoose.Schema({
   simID: String,
-  imgURL: String,
+  imgKey: String,
 });
 
 export type PictureDocument = mongoose.Document & {
   simID: string;
-  imgURL: string;
+  imgKey: string;
 };
 
 export const Picture = mongoose.model("Picture", pictureSchema, "resource");
