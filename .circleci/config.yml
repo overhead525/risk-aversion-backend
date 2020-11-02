@@ -2,7 +2,8 @@ version: 2.1
 orbs:
   node: circleci/node@3.0.0
 workflows:
-  node-tests:
+  jest-test:
     jobs:
-      - node/test
+      - npm install
+      - npm test
 
