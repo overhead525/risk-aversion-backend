@@ -9,13 +9,6 @@ Content-Type: application/json
 Authorization: Bearer {{$dotenv PERMANENT_ACCESS_TOKEN}}
 
 {
-    "firstName": "Malcolm",
     "lastName": "Gladwell",
-    "tradingHabits": {
-        "risk": 0.1,
-        "reward": 0.3,
-        "lossPercentage": 0.3,
-        "winPercentage": 0.7
-    },
     "goalPortfolio": 31000
 }

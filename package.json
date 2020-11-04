@@ -8,6 +8,8 @@
         "devAuth": "nodemon",
         "server": "ts-node ./src/server.ts",
         "authServer": "ts-node ./src/authServer.ts",
+        "imageServer": "ts-node ./src/imageServer.ts",
+        "profileServer": "ts-node ./src/profileServer.ts",
         "test": "jest"
     },
     "keywords": [],
@@ -24,6 +26,7 @@
     "dependencies": {
         "@types/axios": "^0.14.0",
         "@types/bcrypt": "^3.0.0",
+        "@types/body-parser": "^1.19.0",
         "@types/dotenv": "^8.2.0",
         "@types/express": "^4.17.8",
         "@types/isomorphic-fetch": "0.0.35",
@@ -33,6 +36,7 @@
         "@types/morgan": "^1.9.1",
         "axios": "^0.20.0",
         "bcrypt": "^5.0.0",
+        "body-parser": "^1.19.0",
         "dotenv": "^8.2.0",
         "express": "^4.17.1",
         "isomorphic-fetch": "^3.0.0",

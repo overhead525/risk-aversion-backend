@@ -41,10 +41,12 @@ router.post(
       });
       if (!userDoc) return res.sendStatus(404);
 
-      userDoc.profile = {
-        ...userDoc.profile,
+      const currentProfile = await userDoc.get("profile");
+      const toSaveProfile = {
+        ...currentProfile,
         ...newProfile,
       };
+      console.log(toSaveProfile);
 
       await userDoc.save();
       return res.send(
