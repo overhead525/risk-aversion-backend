@@ -1,0 +1,17 @@
+FROM node:10.23-alpine
+WORKDIR /app
+ADD package*.json .
+RUN npm install
+
+ADD . .
+
+ENV ACCESS_TOKEN_SECRET=a8f3ee3a8e372f46c77b47287523818e02a412908f7505c2e7a3ccb9b3741cdcdd58cd15e2376a833eb0c0f4a37b1dd46aa4b79667ba03ed3f84f79149e48891
+ENV PERMANENT_ACCESS_TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTG1hbGNvbG1SIiwiaWF0IjoxNjAzNjk2NzI1fQ.h5nXMrUYJyWaEP0wkVoxzx3HfM9deYcZHuAgTEL1AkQ
+ENV REFRESH_TOKEN_SECRET=71d9f616b3bc61954427e577e1ff8ff2d7f29e652ae3e8c35ae6634d93ee48a60b6bdd5f67205f6bd2e80fe16d63b0f2595b8cc2ee237e9ce95080c02a645486
+ENV CORE_SERVER_URL=http://localhost:8000/graphql
+ENV RESOURCE_SERVER_URL=http://localhost:5050/resource
+ENV DATABASE_URL=mongodb+srv://root:Q3cuLOWpHMpFhd6D@risk-aversion-backend-d.shiry.azure.mongodb.net/risk-aversion-data?retryWrites=true&w=majority
+ENV AWS_ACCESS_KEY_ID=AKIAJ3OBWGLME5Y2EMBA
+ENV AWS_SECRET_ACCESS_KEY=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
+
+CMD npm run authServer
