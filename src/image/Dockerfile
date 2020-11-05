@@ -5,4 +5,4 @@ RUN npm install
 
 ADD . .
 
-CMD npm test
+CMD npm run imageServer
