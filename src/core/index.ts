@@ -51,7 +51,7 @@ router.get(
     if (res.locals.query) {
       const query: string = res.locals.query;
       try {
-        const response = await fetch(process.env["CORE_SERVER_URL"], {
+        const response = await fetch(process.env["SIM_SERVER_URL"], {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -63,6 +63,7 @@ router.get(
 
         return res.status(200).send(responseJSON.data);
       } catch (error) {
+        console.error(error);
         return res
           .status(500)
           .send("Something wrong happened with the simulation");
@@ -80,7 +81,7 @@ router.post(
 
     // Send graphql request to python graphql server and await response
     try {
-      const response = await fetch(process.env["CORE_SERVER_URL"], {
+      const response = await fetch(process.env["SIM_SERVER_URL"], {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -112,7 +113,7 @@ router.post(
 
     // Send graphql request to python graphql server and await response
     try {
-      const response = await fetch(process.env["CORE_SERVER_URL"], {
+      const response = await fetch(process.env["SIM_SERVER_URL"], {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -128,6 +129,7 @@ router.post(
 
       return res.status(200).send(responseJSON.data);
     } catch (error) {
+      console.error(error);
       return res
         .status(500)
         .send("Something wrong happened with the simulation");
@@ -144,7 +146,7 @@ router.post(
 
     // Send graphql request to python graphql server and await response
     try {
-      const response = await fetch("http://localhost:8000/graphql", {
+      const response = await fetch(process.env["SIM_SERVER_URL"], {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -180,7 +182,7 @@ router.post(
 
     // Send graphql request to python graphql server and await response
     try {
-      const response = await fetch("http://localhost:8000/graphql", {
+      const response = await fetch(process.env["SIM_SERVER_URL"], {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -220,7 +222,7 @@ router.post(
 
     // Send graphql request to python graphql server and await response
     try {
-      const response = await fetch(process.env["CORE_SERVER_URL"], {
+      const response = await fetch(process.env["SIM_SERVER_URL"], {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
