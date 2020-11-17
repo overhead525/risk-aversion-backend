@@ -8,6 +8,8 @@
         "devAuth": "nodemon",
         "server": "ts-node ./src/server.ts",
         "authServer": "ts-node ./src/authServer.ts",
+        "imageServer": "ts-node ./src/imageServer.ts",
+        "profileServer": "ts-node ./src/profileServer.ts",
         "test": "jest"
     },
     "keywords": [],
