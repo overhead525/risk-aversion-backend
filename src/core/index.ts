@@ -39,7 +39,7 @@ interface coreQueryRequest extends express.Request {
   body: Array<any>;
 }
 
-interface coreSimOutputResponse {
+export interface coreSimOutputResponse {
   simulate: {
     result: {
       simID: string;
@@ -47,6 +47,10 @@ interface coreSimOutputResponse {
       minPortfolio: number;
     };
   };
+}
+
+export interface deleteSimResponse {
+  ok: boolean | boolean[];
 }
 
 router.get(
@@ -59,7 +63,7 @@ router.get(
     if (res.locals.query) {
       const query: string = res.locals.query;
       try {
-        const response = await fetch(process.env["CORE_SERVER_URL"], {
+        const response = await fetch(process.env["SIM_SERVER_URL"], {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -77,46 +81,6 @@ router.get(
   }
 );
 
-router.delete(
-  "/mySimulations/:simID",
-  authenticateToken,
-  (req: express.Request, res: express.Response, next: express.NextFunction) => {
-    if (req.params.simID) {
-      const authHeader = req.headers["authorization"]; // Expecting something like: "Bearer <accessToken> <refreshToken>"
-      const accessToken = authHeader.split(" ")[1];
-
-      const username = jwt.decode(accessToken)["name"];
-
-      try {
-        useDB(async () => {
-          const user = await User.findOne({ username: username });
-          if (user) {
-            // @ts-ignore
-            user.simulations = user.simulations.filter((simulation) => {
-              return simulation.simID !== req.params.simID;
-            });
-            await user.save();
-            return res
-              .status(200)
-              .send(
-                `Successfully deleted simID: ${req.params.simID} for user: ${username}`
-              );
-          }
-          return res
-            .status(404)
-            .send(`Could not find a user with username: ${username}`);
-        });
-      } catch (error) {
-        return res
-          .status(500)
-          .send(
-            `Could not delete simulation: ${req.params.simID} for user: ${username}...something went wrong`
-          );
-      }
-    }
-  }
-);
-
 router.post(
   "/simulations",
   authenticateToken,
@@ -126,7 +90,7 @@ router.post(
 
     // Send graphql request to python graphql server and await response
     try {
-      const response = await fetch(process.env["CORE_SERVER_URL"], {
+      const response = await fetch(process.env["SIM_SERVER_URL"], {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -156,7 +120,7 @@ router.post(
 
     // Send graphql request to python graphql server and await response
     try {
-      const response = await fetch(process.env["CORE_SERVER_URL"], {
+      const response = await fetch(process.env["SIM_SERVER_URL"], {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -186,7 +150,7 @@ router.post(
 
     // Send graphql request to python graphql server and await response
     try {
-      const response = await fetch("http://localhost:8000/graphql", {
+      const response = await fetch(process.env["SIM_SERVER_URL"], {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -216,6 +180,12 @@ router.post(
   }
 );
 
+router.delete(
+  "/simulations/:simID",
+  authenticateToken,
+  async (req: express.Request, res: express.Response) => {}
+);
+
 router.post(
   "/configurations/:simID",
   authenticateToken,
@@ -225,7 +195,7 @@ router.post(
 
     // Send graphql request to python graphql server and await response
     try {
-      const response = await fetch("http://localhost:8000/graphql", {
+      const response = await fetch(process.env["SIM_SERVER_URL"], {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -268,7 +238,7 @@ router.post(
 
     // Send graphql request to python graphql server and await response
     try {
-      const response = await fetch(process.env["CORE_SERVER_URL"], {
+      const response = await fetch(process.env["SIM_SERVER_URL"], {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -330,6 +300,7 @@ router.post(
 
       res.status(200).send(responseData);
     } catch (error) {
+      console.error(error);
       res.status(500).send("Something wrong happened with the simulation");
     }
 
