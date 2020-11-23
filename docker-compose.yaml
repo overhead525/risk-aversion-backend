@@ -1,0 +1,15 @@
+version: "3"
+services:
+  core:
+    image: node:14.15.1
+    build: .
+    command: npm run server
+    volumes:
+      - .:/home/node/app
+    ports:
+      - 3000:3000
+    environment: 
+      DATABASE_URL: /run/secrets/mongo_db_endpoint
+
+secrets:
+  mongo_db_endpoint: secrets/mongo_db_endpoint.txt

@@ -18,7 +18,7 @@ Authorization: Bearer {{$dotenv PERMANENT_ACCESS_TOKEN}}
 
 ###
 
-GET http://localhost:3000/graphql/mySimulations/simulations
+GET http://localhost:3000/graphql/mySimulations/configurations
 Content-Type: application/json
 Authorization: Bearer {{$dotenv PERMANENT_ACCESS_TOKEN}}
 

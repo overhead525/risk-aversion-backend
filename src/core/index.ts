@@ -72,6 +72,35 @@ router.get(
   }
 );
 
+router.delete("/mySimulations/:candidate", authenticateToken, async (req: express.Request, res: express.Response) => {
+  const username = req.body.username;
+  if (req.params.candidate) {
+    if (username) {
+      try {
+        const userDoc = await User.findOne({ username });
+        if (!userDoc) return res.status(404).send("Could not find user...");
+        //@ts-ignore
+        if (!userDoc.simulations) return res.status(404).send(`User ${username} has no simulations to delete`);
+        //@ts-ignore
+        const targetSimulation: [{ simName: string, simID: string }] = userDoc.simulations.filter((simulation: { simName: string, simID: string }) => {
+          return simulation.simID === req.params.candidate;
+        });
+        if (!targetSimulation) return res.status(404).send(`Simulation ${req.params.candidate} no found in database`);
+        //@ts-ignore
+        userDoc.simulations = userDoc.simulations.filter((simulation: { simName: string, simID: string }) => {
+          return simulation.simID === req.params.candidate;
+        });
+        await userDoc.save();
+        return res.status(200).send(`Successfully deleted simulation: ${req.params.candidate} for user ${username}`);
+      } catch (error) {
+        console.error(error);
+        return res.status(500).send(`Couldn't process request to delete simulation`);
+      }
+    }
+  }
+  return res.status(500).send(`Couldn't process request to delete simulation`);
+})
+
 router.post(
   "/simulations",
   authenticateToken,

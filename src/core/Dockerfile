@@ -1,4 +1,5 @@
-FROM node:10.23-alpine
+FROM node:14.15.1
+VOLUME [ "." ]
 WORKDIR /app
 # ADD package*.json .
 ADD . .
