@@ -22,5 +22,11 @@ mongoose
 
     app.use("/image", allowHeader, image);
 
-    app.listen(5050, () => console.log("server running on port 5050"));
+    app.listen(5050, () => {
+      console.log(`server running on port 5050 🚀`);
+      if (process.argv[2] && process.argv[2] === "temp") {
+        console.log("image server started successfully. Exiting...");
+        return process.exit(0);
+      }
+    });
   });

@@ -22,5 +22,11 @@ mongoose
 
     app.use("/graphql", allowHeader, core);
 
-    app.listen(3000, () => console.log("server running on port 3000 🚀"));
+    app.listen(3000, () => {
+      console.log(`server running on port 3000 🚀`);
+      if (process.argv[2] && process.argv[2] === "temp") {
+        console.log("core server started successfully. Exiting...");
+        return process.exit(0);
+      }
+    });
   });
