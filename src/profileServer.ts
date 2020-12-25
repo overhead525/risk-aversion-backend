@@ -22,5 +22,11 @@ mongoose
 
     app.use("/profile", allowHeader, profile);
 
-    app.listen(4500, () => console.log("server running on port 4500"));
+    app.listen(4500, () => {
+      console.log(`server running on port 4500 🚀`);
+      if (process.argv[2] && process.argv[2] === "temp") {
+        console.log("profile server started successfully. Exiting...");
+        return process.exit(0);
+      }
+    });
   });

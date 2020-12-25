@@ -24,5 +24,11 @@ mongoose
 
     app.use("/auth", allowHeader, auth);
 
-    app.listen(4000, () => console.log("server running on port 4000 🚀"));
+    app.listen(4000, () => {
+      console.log(`server running on port 4000 🚀`);
+      if (process.argv[2] && process.argv[2] === "temp") {
+        console.log("auth server started successfully. Exiting...");
+        return process.exit(0);
+      }
+    });
   });
