@@ -30,4 +30,7 @@ jobs:
       - uses: bahmutov/npm-install@v1.6.0
       # Run server starts script
       - run: ./scripts/server-starts.sh
+        env: 
+          DATABASE_URL: mongodb+srv://root:Q3cuLOWpHMpFhd6D@risk-aversion-backend-d.shiry.azure.mongodb.net/risk-aversion-data?retryWrites=true&w=majority
+
 
